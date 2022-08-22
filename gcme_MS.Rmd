@@ -193,9 +193,10 @@ summary(aov(jmax_vcmax ~ type_box, data = gcme_nfer))
 
 #now, meta-analysis of eCO2 responses 
 #only keep co2 + fertilization (where only evaluate co2 effect) plots 
-gcme_meta <- subset(gcme,condition=="co2")
+gcme_meta <- subset(gcme,condition=="co2"|condition=="Fertilization")
 
 #make points labelled well
+gcme_meta$type_name[gcme_meta$condition=="Fertilization"] <- "Fertilization"
 gcme_meta$type_name[gcme_meta$condition=="co2"] <- "others"
 gcme_meta$type_name[gcme_meta$ecm_type=="Nfix"] <- "N-fixing"
 
@@ -223,6 +224,7 @@ t3 <- ggplot(gcme_meta,aes_string(x="narea", y="vcmax")) +geom_hline(yintercept=
   labs(y=~paste(V[cmax]))+labs(x=~paste(N[area]))
 
 t4 <- ggplot(gcme_meta,aes_string(x="LMA", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+  geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(LMA))
 
@@ -306,12 +308,12 @@ d1 <- ggplot(gcme_meta,aes_string(x="nmass", y="narea")) +geom_hline(yintercept=
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste(N[mass]))+labs(y=~paste(N[area]))
 
-d2 <- ggplot(gcme_meta,aes_string(x="anpp", y="narea")) +geom_hline(yintercept=0)+
+d2 <- ggplot(gcme_meta,aes_string(x="LMA", y="narea")) +geom_hline(yintercept=0)+
   geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+
   stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
   geom_smooth(color="black",method="lm",se=T)+xlim(-0.1,0.7)+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
-  labs(x=~paste("ANPP"))+labs(y=~paste(N[area]))
+  labs(x=~paste("LMA"))+labs(y=~paste(N[area]))
 
 d3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="LMA")) +geom_hline(yintercept=0)+
   geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+
