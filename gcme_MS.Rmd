@@ -62,6 +62,12 @@ jv_co2_fig <- gcme_co2 %>%
 plot_grid(vcmax_co2_fig,jmax_co2_fig,jv_co2_fig,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
 ggsave(paste("./output/chap2_co2.jpg",sep=""),width = 15, height = 5)
+
+#also, t-test of prediction vs. observation
+t.test(gcme_co2$vcmax,gcme_co2$pred_vcmax) 
+t.test(gcme_co2$jmax,gcme_co2$pred_jmax) 
+t.test(gcme_co2$jmax_vcmax,gcme_co2$pred_jmax_vcmax) 
+
 ```
 
 ###Processing light effect
@@ -79,14 +85,14 @@ vcmax_light_fig <- gcme_light %>% ggplot( aes(x=type_name, y=vcmax)) +
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
   labs(x="", y=~paste(V[cmax]," response to light")) 
 
-jmax_light_fig <- gcme_light %>% ggplot( aes(x=type_name, y=jmax)) +
+jmax_light_fig <- subset(gcme_light,is.na(jmax)==F) %>% ggplot( aes(x=type_name, y=jmax)) +
   geom_jitter(size=2) +geom_jitter(aes(x=type_name, y=pred_jmax),color="red",size=2)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_jmax),color="red", size=0.5)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
   labs(x="", y=~paste(J[max]," response to light")) 
 
-jv_light_fig <- gcme_light %>% ggplot( aes(x=type_name, y=jmax_vcmax)) +
+jv_light_fig <- subset(gcme_light,is.na(jmax_vcmax)==F) %>% ggplot( aes(x=type_name, y=jmax_vcmax)) +
   geom_jitter(size=2) +geom_jitter(aes(x=type_name, y=pred_jmax_vcmax),color="red",size=2)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_jmax_vcmax),color="red", size=0.5)+
@@ -96,6 +102,12 @@ jv_light_fig <- gcme_light %>% ggplot( aes(x=type_name, y=jmax_vcmax)) +
 plot_grid(vcmax_light_fig,jmax_light_fig,jv_light_fig,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
 ggsave(paste("./output/chap2_light.jpg",sep=""),width = 15, height = 5)
+
+#also, t-test of prediction vs. observation
+t.test(gcme_light$vcmax,gcme_light$pred_vcmax) 
+t.test(gcme_light$jmax,gcme_light$pred_jmax) 
+t.test(gcme_light$jmax_vcmax,gcme_light$pred_jmax_vcmax) 
+
 ```
 
 
@@ -135,6 +147,13 @@ w3 <- gcme_warming %>%
 plot_grid(w1,w2,w3,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
 ggsave(paste("./output/chap2_warming.jpg",sep=""),width = 15, height = 5)
+
+
+#also, t-test of prediction vs. observation
+t.test(gcme_warming$vcmax,gcme_warming$pred_vcmax) 
+t.test(gcme_warming$jmax,gcme_warming$pred_jmax) 
+t.test(gcme_warming$jmax_vcmax,gcme_warming$pred_jmax_vcmax) 
+
 ```
 
 ###Processing N fertilization effect
@@ -147,8 +166,8 @@ gcme_nfer <-subset(gcme,type_name=="highN"|type_name=="lowN"|type_name=="No_fert
 gcme_nfer %>% group_by(type_name)  %>% summarise(number = n())
 
 #creat box name
-gcme_nfer$type_box[gcme_nfer$type_name=="highN"|gcme_nfer$type_name=="Fertilization"] <- "N fertilization"
-gcme_nfer$type_box[gcme_nfer$type_name=="lowN"|gcme_nfer$type_name=="No_fertilization"] <- "Non N fertilization"
+gcme_nfer$type_box[gcme_nfer$type_name=="highN"|gcme_nfer$type_name=="Fertilization"] <- "High nitrogen"
+gcme_nfer$type_box[gcme_nfer$type_name=="lowN"|gcme_nfer$type_name=="No_fertilization"] <- "Low nitrogen"
 
 f1 <- gcme_nfer %>%
   ggplot( aes(x=type_box, y=vcmax)) +
@@ -344,13 +363,14 @@ plot_grid(t1,t2,t3,t4,legend_info,
           t1a,p1,p2,p3,white,
           b1,b2,b3,b4,b5,
           c1,c2,c3,c4,c5,
-          d1,d2,d3,d4,d5,
+          d3,d4,d5,white,white,
           nrow=5,
           labels = c('(a)','(b)','(c)','(d)',' ',
                      '(e)','(f)','(g)','(h)',' ',
                      '(i)','(j)','(k)','(l)','(m)',
                      '(n)','(o)','(p)','(q)','(r)',
-                     '(s)','(t)','(u)','(v)','(w)'), label_size = 23)+theme(plot.background=element_rect(fill="white", color="white"))
+                     '(s)','(t)','(u)', ' ' , ' '), label_size = 23)+
+  theme(plot.background=element_rect(fill="white", color="white"))
 ggsave(paste("./output/chap2_meta.jpg",sep=""),width = 25, height = 25)
  
 ```
@@ -390,5 +410,7 @@ t.test(gcme_meta$anpp, mu = 0)
 t.test(gcme_meta$root_shoot_ratio, mu = 0)
 t.test(gcme_meta$soil_mineral_N, mu = 0)
 t.test(gcme_meta$lai, mu = 0) 
+
+
 ```
 
