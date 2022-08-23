@@ -2,6 +2,7 @@
 
 ("~/data/gcme/MS_data/plot_data.csv")
 
+Below are this dataset's README information (also saved in Euler)
 
 exp: experimental name
 
@@ -9,10 +10,9 @@ lon: longitude
 
 lat: latitude
 
-condition: light = light treatment (divided into low vs. high light, or shading vs. sun; see typename), co2 = co2 treatment, warming  = warming treatment, Fertilization = Fertilization effect (but still only evalualtes co2 effect). High and low N = high vs. low fertilization effect (but still only evalualtes co2 effect)
+condition: light = light treatment (divided into low vs. high light, or shading vs. sun; see typename), co2 = co2 treatment, warming  = warming treatment, Fertilization = Fertilization effect (but still only evaluates co2 effect). High and low N = high vs. low fertilization effect (but still only evaluates co2 effect)
 
-Note: For fertilization effect: There are 5 paralleled sites that measures eCO2-Vcmax effect at Nfertilizations vs. no fertilizations effect. There are another 7 paralleled sites that measures eCO2-Vcmax effect at high N vs. low N. See 'type name' variable.
-
+Note: For fertilization effect: There are 5 paralleled sites that measures eCO2-Vcmax effect at Nfertilizations vs. no fertilizations effect. There are another 7 paralleled sites that measures eCO2-Vcmax effect at high N vs. low N. See 'type name' variable (it includes 5 paralleled sites with "Fertilization" vs "No_fertilization", and 7 paralleled sites with "highN" vs. "lowN".
 
 
 All below values are sensitivity coefficient, but definitions different between treamtents: 
