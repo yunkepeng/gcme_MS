@@ -79,21 +79,24 @@ gcme_light$type_name[gcme_light$type_name=="shade_to_sun"] <- "Shade to sun"
 gcme_light$type_name[gcme_light$type_name=="low_to_high_light"] <- "Low to high light"
 
 vcmax_light_fig <- gcme_light %>% ggplot( aes(x=type_name, y=vcmax)) +
-  geom_jitter(size=2) +geom_jitter(aes(x=type_name, y=pred_vcmax),color="red",size=2)+
+  geom_jitter(size=2) +
+  geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_vcmax),color="red", size=0.5)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
   labs(x="", y=~paste(V[cmax]," response to light")) 
 
 jmax_light_fig <- subset(gcme_light,is.na(jmax)==F) %>% ggplot( aes(x=type_name, y=jmax)) +
-  geom_jitter(size=2) +geom_jitter(aes(x=type_name, y=pred_jmax),color="red",size=2)+
+  geom_jitter(size=2) +
+  geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_jmax),color="red", size=0.5)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
   labs(x="", y=~paste(J[max]," response to light")) 
 
 jv_light_fig <- subset(gcme_light,is.na(jmax_vcmax)==F) %>% ggplot( aes(x=type_name, y=jmax_vcmax)) +
-  geom_jitter(size=2) +geom_jitter(aes(x=type_name, y=pred_jmax_vcmax),color="red",size=2)+
+  geom_jitter(size=2) +
+  geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_jmax_vcmax),color="red", size=0.5)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
@@ -123,7 +126,9 @@ gcme_warming$observation <- "Observation"
 w1 <- gcme_warming %>%
   ggplot( aes(x=observation, y=vcmax)) +
   geom_jitter(size=2,color="black") +
+  geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_jitter(aes(x=prediction, y=pred_vcmax),size=2,color="red") +
+  geom_boxplot(aes(x=prediction, y=pred_vcmax),color="red",alpha = 0.6,outlier.shape = NA)+
   geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.15,0.05)+
   labs(x=" ", y=~paste(V[cmax25]," response to warming")) +
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
@@ -131,7 +136,9 @@ w1 <- gcme_warming %>%
 w2 <- gcme_warming %>%
   ggplot( aes(x=observation, y=jmax)) +
   geom_jitter(size=2,color="black") +
+  geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_jitter(aes(x=prediction, y=pred_jmax),size=2,color="red") +
+  geom_boxplot(aes(x=prediction, y=pred_jmax),color="red",alpha = 0.6,outlier.shape = NA)+
   geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.15,0.05)+
   labs(x=" ", y=~paste(J[max25]," response to warming")) +
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
@@ -139,7 +146,9 @@ w2 <- gcme_warming %>%
 w3 <- gcme_warming %>%
   ggplot( aes(x=observation, y=jmax_vcmax)) +
   geom_jitter(size=2,color="black") +
+  geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_jitter(aes(x=prediction, y=pred_jmax_vcmax),size=2,color="red") +
+  geom_boxplot(aes(x=prediction, y=pred_jmax_vcmax),color="red",alpha = 0.6,outlier.shape = NA)+
   geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+ ylim(-0.15,0.05)+
   labs(x=" ", y=~paste(J[max25],"/",V[cmax25],," response to warming")) +
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
@@ -212,9 +221,12 @@ summary(aov(jmax_vcmax ~ type_box, data = gcme_nfer))
 
 #now, meta-analysis of eCO2 responses 
 #only keep co2 + fertilization (where only evaluate co2 effect) plots 
-gcme_meta <- subset(gcme,condition=="co2"|condition=="Fertilization")
+gcme_meta <- subset(gcme,condition=="co2"|condition=="Fertilization"|
+                      condition=="highN"|condition=="lowN")
 
 #make points labelled well
+gcme_meta$type_name[gcme_meta$condition=="highN"] <- "Fertilization"
+gcme_meta$type_name[gcme_meta$condition=="lowN"] <- "Fertilization"
 gcme_meta$type_name[gcme_meta$condition=="Fertilization"] <- "Fertilization"
 gcme_meta$type_name[gcme_meta$condition=="co2"] <- "others"
 gcme_meta$type_name[gcme_meta$ecm_type=="Nfix"] <- "N-fixing"
