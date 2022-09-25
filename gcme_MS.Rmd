@@ -178,6 +178,28 @@ gcme_nfer %>% group_by(type_name)  %>% summarise(number = n())
 gcme_nfer$type_box[gcme_nfer$type_name=="highN"|gcme_nfer$type_name=="Fertilization"] <- "High nitrogen"
 gcme_nfer$type_box[gcme_nfer$type_name=="lowN"|gcme_nfer$type_name=="No_fertilization"] <- "Low nitrogen"
 
+#type_1 high N
+a1 <- subset(gcme_nfer,condition=="highN"|condition=="lowN")[c(1,3,5,7,9,11,13),c("exp","vcmax","jmax","jmax_vcmax","condition")]
+#type1 low N
+a2 <- subset(gcme_nfer,condition=="highN"|condition=="lowN")[c(2,4,6,8,10,12,14),c("exp","vcmax","jmax","jmax_vcmax","condition")]
+
+#type 2 with N
+a3 <- subset(gcme_nfer,condition=="Fertilization")[,c("exp","vcmax","jmax","jmax_vcmax","condition")]
+#type 2 without N
+a4 <- subset(gcme_nfer,condition=="co2")[,c("exp","vcmax","jmax","jmax_vcmax","condition")]
+
+#combine
+df1 <- rbind(a1,a3)
+df2 <- rbind(a2,a4)
+names(df2) <- c("exp_low","vcmax_low","jmax_low","jmax_vcmax_low","condition_low")
+
+df3 <- as.data.frame(cbind(df1,df2))
+
+df3$ratio_v <- df3$vcmax-df3$vcmax_low
+df3$ratio_j <- df3$jmax-df3$jmax_low
+df3$ratio_jv <- df3$jmax_vcmax-df3$jmax_vcmax_low
+df3$type_box <- "High - low"
+
 f1 <- gcme_nfer %>%
   ggplot( aes(x=type_box, y=vcmax)) +
   geom_boxplot(alpha=0.5,width = 0.7, outlier.shape = NA)+
@@ -185,6 +207,9 @@ f1 <- gcme_nfer %>%
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=vcmax),size=2,color="blue",width = 0.3)+
   geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1.5,0.5)+
   labs(x="", y=~paste(V[cmax]," response to eCO2")) +
+  geom_boxplot(data=df3,aes(x=type_box,y=ratio_v),alpha=0.5,width = 0.7, outlier.shape = NA)+
+  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_v),size=2,color="black",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_v),size=2,color="blue",width = 0.3)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
 f2 <- gcme_nfer %>%
@@ -194,6 +219,9 @@ f2 <- gcme_nfer %>%
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=jmax),size=2,color="blue",width = 0.3)+
   geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+ ylim(-1.5,1)+
   labs(x="", y=~paste(J[max]," response to eCO2")) +
+  geom_boxplot(data=df3,aes(x=type_box,y=ratio_j),alpha=0.5,width = 0.7, outlier.shape = NA)+
+  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_j),size=2,color="black",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_j),size=2,color="blue",width = 0.3)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
 f3 <- gcme_nfer %>%
@@ -203,11 +231,14 @@ f3 <- gcme_nfer %>%
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=jmax_vcmax),size=2,color="blue",width = 0.3)+
   geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+ ylim(-0.5,1.2)+
   labs(x="", y=~paste(J[max],"/",V[cmax]," response to eCO2")) +
+  geom_boxplot(data=df3,aes(x=type_box,y=ratio_jv),alpha=0.5,width = 0.7, outlier.shape = NA)+
+  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_jv),size=2,color="black",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_jv),size=2,color="blue",width = 0.3)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
 plot_grid(f1,f2,f3,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
-ggsave(paste("./output/chap2_fertilization.jpg",sep=""),width = 15, height = 5)
+ggsave(paste("./output/chap2_fertilization.jpg",sep=""),width = 15, height = 8)
 
 #anova test about whether N fertilization will shift vcmax
 summary(aov(vcmax ~ type_box, data = gcme_nfer))
@@ -391,7 +422,7 @@ ggsave(paste("./output/chap2_meta.jpg",sep=""),width = 25, height = 25)
 
 ```{r warning=FALSE}
 #PCA figure
-test <- gcme_meta[,c("lai","vcmax","jmax","narea","LMA","nmass","bnpp","anpp","root_shoot_ratio")]
+test <- gcme_meta[,c("lai","vcmax","jmax","narea","LMA","nmass","bnpp","anpp","root_shoot_ratio","soil_mineral_N")]
 ncomp <- estim_ncpPCA(test)
 res.imp <- imputePCA(test, ncp = ncomp$ncp) #filled by pca function
 
@@ -426,3 +457,70 @@ t.test(gcme_meta$lai, mu = 0)
 
 ```
 
+###qq plot
+
+```{r warning=FALSE}
+
+#create a function
+qqplot_output <- function(df,y_name,x_name,type_name,lab_title){
+  data1 <- na.omit(df[,c(x_name,y_name,type_name)])
+  lm_output <- (lm(data1[,c(y_name)]~data1[,c(x_name)]))
+  data1$residual <- as.numeric(resid(lm_output))
+  
+  output_fig <- ggplot(data1)+
+    stat_qq(aes(sample = residual,color=type_name),size=3)+
+    stat_qq_line(aes(sample = residual))+
+    theme(axis.text=element_text(size=20),title=element_text(size=20),
+          axis.title=element_text(size=20),legend.position="none")+
+    xlab("Theoritical")+ylab("Residuals")+lab_title
+
+  return(output_fig)
+}
+
+q1<- qqplot_output(gcme_meta,"vcmax","jmax","type_name",ggtitle(~paste(V[cmax]," vs. ",J[max],sep=" ")))
+q2<- qqplot_output(gcme_meta,"vcmax","nmass","type_name",ggtitle(~paste(V[cmax]," vs. ",N[mass],sep=" ")))
+q3<- qqplot_output(gcme_meta,"vcmax","narea","type_name",ggtitle(~paste(V[cmax]," vs. ",N[area],sep=" ")))
+q4<- qqplot_output(gcme_meta,"vcmax","LMA","type_name",ggtitle(~paste(V[cmax]," vs. ",LMA,sep=" ")))
+q5<- qqplot_output(gcme_meta,"jmax","vcmax","type_name",ggtitle(~paste(J[max]," vs. ",V[cmax],sep=" ")))
+q6<- qqplot_output(gcme_meta,"jmax","nmass","type_name",ggtitle(~paste(J[max]," vs. ",N[mass],sep=" ")))
+q7<- qqplot_output(gcme_meta,"jmax","narea","type_name",ggtitle(~paste(J[max]," vs. ",N[area],sep=" ")))
+q8<- qqplot_output(gcme_meta,"jmax","LMA","type_name",ggtitle(~paste(J[max]," vs. ",LMA,sep=" ")))
+q9<- qqplot_output(gcme_meta,"vcmax","anpp","type_name",ggtitle(~paste(V[cmax]," vs. ",ANPP,sep=" ")))
+q10<- qqplot_output(gcme_meta,"vcmax","bnpp","type_name",ggtitle(~paste(V[cmax]," vs. ",BNPP,sep=" ")))
+q11<- qqplot_output(gcme_meta,"vcmax","root_shoot_ratio","type_name",ggtitle(~paste(V[cmax]," vs. ",Root/Shoot,sep=" ")))
+q12<- qqplot_output(gcme_meta,"vcmax","lai","type_name",ggtitle(~paste(V[cmax]," vs. ",LAI,sep=" ")))
+q13<- qqplot_output(gcme_meta,"vcmax","soil_mineral_N","type_name",ggtitle(~paste(V[cmax]," vs. ","Soil N",sep=" ")))
+q14<- qqplot_output(gcme_meta,"jmax","anpp","type_name",ggtitle(~paste(J[max]," vs. ",ANPP,sep=" ")))
+q15<- qqplot_output(gcme_meta,"jmax","bnpp","type_name",ggtitle(~paste(J[max]," vs. ",BNPP,sep=" ")))
+q16<- qqplot_output(gcme_meta,"jmax","root_shoot_ratio","type_name",ggtitle(~paste(J[max]," vs. ",Root/Shoot,sep=" ")))
+q17<- qqplot_output(gcme_meta,"jmax","lai","type_name",ggtitle(~paste(J[max]," vs. ",LAI,sep=" ")))
+q18<- qqplot_output(gcme_meta,"jmax","soil_mineral_N","type_name",ggtitle(~paste(J[max]," vs. ","Soil N",sep=" ")))
+q19<- qqplot_output(gcme_meta,"LMA","root_shoot_ratio","type_name",ggtitle(~paste(LMA," vs. ",Root/Shoot,sep=" ")))
+q20<- qqplot_output(gcme_meta,"LMA","lai","type_name",ggtitle(~paste(LMA," vs. ",LAI,sep=" ")))
+q21<- qqplot_output(gcme_meta,"nmass","bnpp","type_name",ggtitle(~paste(N[mass]," vs. ",BNPP,sep=" ")))
+
+
+#get legend
+legend_fig<- ggplot(gcme_meta, aes( x= "jmax", y = "vcmax")) + 
+  geom_point(aes(color=type_name),size=2)+
+  theme(text = element_text(size=30),axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"))+scale_colour_discrete(" ")
+
+legend_info <- as_ggplot(get_legend(legend_fig))
+
+white <- theme(plot.background=element_rect(fill="white", color="white"))
+
+plot_grid(q1,q2,q3,q4,legend_info,
+          q5,q6,q7,q8,white,
+          q9,q10,q11,q12,q13,
+          q14,q15,q16,q17,q18,
+          q19,q20,q21,white,white,
+          nrow=5,
+          labels = c('(a)','(b)','(c)','(d)',' ',
+                     '(e)','(f)','(g)','(h)',' ',
+                     '(i)','(j)','(k)','(l)','(m)',
+                     '(n)','(o)','(p)','(q)','(r)',
+                     '(s)','(t)','(u)', ' ' , ' '), label_size = 23)+
+  theme(plot.background=element_rect(fill="white", color="white"))
+ggsave(paste("./output/chap2_meta_qqplot.jpg",sep=""),width = 25, height = 25)
+
+```
