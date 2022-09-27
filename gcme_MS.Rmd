@@ -179,9 +179,9 @@ gcme_nfer$type_box[gcme_nfer$type_name=="highN"|gcme_nfer$type_name=="Fertilizat
 gcme_nfer$type_box[gcme_nfer$type_name=="lowN"|gcme_nfer$type_name=="No_fertilization"] <- "Low nitrogen"
 
 #type_1 high N
-a1 <- subset(gcme_nfer,condition=="highN"|condition=="lowN")[c(1,3,5,7,9,11,13),c("exp","vcmax","jmax","jmax_vcmax","condition")]
+a1 <- subset(gcme_nfer,condition=="highN")[,c("exp","vcmax","jmax","jmax_vcmax","condition")]
 #type1 low N
-a2 <- subset(gcme_nfer,condition=="highN"|condition=="lowN")[c(2,4,6,8,10,12,14),c("exp","vcmax","jmax","jmax_vcmax","condition")]
+a2 <- subset(gcme_nfer,condition=="lowN")[,c("exp","vcmax","jmax","jmax_vcmax","condition")]
 
 #type 2 with N
 a3 <- subset(gcme_nfer,condition=="Fertilization")[,c("exp","vcmax","jmax","jmax_vcmax","condition")]
@@ -205,11 +205,11 @@ f1 <- gcme_nfer %>%
   geom_boxplot(alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(gcme_nfer,type_name=="Fertilization"|type_name=="No_fertilization"),aes(x=type_box, y=vcmax),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=vcmax),size=2,color="blue",width = 0.3)+
-  geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1.5,0.5)+
+  geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ 
   labs(x="", y=~paste(V[cmax]," response to eCO2")) +
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_v),alpha=0.5,width = 0.7, outlier.shape = NA)+
-  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_v),size=2,color="black",width = 0.3)+
-  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_v),size=2,color="blue",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_v),size=2,color="black",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_v),size=2,color="blue",width = 0.3)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
 f2 <- gcme_nfer %>%
@@ -217,11 +217,11 @@ f2 <- gcme_nfer %>%
   geom_boxplot(alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(gcme_nfer,type_name=="Fertilization"|type_name=="No_fertilization"),aes(x=type_box, y=jmax),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=jmax),size=2,color="blue",width = 0.3)+
-  geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+ ylim(-1.5,1)+
+  geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+
   labs(x="", y=~paste(J[max]," response to eCO2")) +
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_j),alpha=0.5,width = 0.7, outlier.shape = NA)+
-  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_j),size=2,color="black",width = 0.3)+
-  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_j),size=2,color="blue",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_j),size=2,color="black",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_j),size=2,color="blue",width = 0.3)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
 f3 <- gcme_nfer %>%
@@ -229,11 +229,11 @@ f3 <- gcme_nfer %>%
   geom_boxplot(alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(gcme_nfer,type_name=="Fertilization"|type_name=="No_fertilization"),aes(x=type_box, y=jmax_vcmax),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=jmax_vcmax),size=2,color="blue",width = 0.3)+
-  geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+ ylim(-0.5,1.2)+
+  geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+
   labs(x="", y=~paste(J[max],"/",V[cmax]," response to eCO2")) +
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_jv),alpha=0.5,width = 0.7, outlier.shape = NA)+
-  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_jv),size=2,color="black",width = 0.3)+
-  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_jv),size=2,color="blue",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_jv),size=2,color="black",width = 0.3)+
+  geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_jv),size=2,color="blue",width = 0.3)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
 plot_grid(f1,f2,f3,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
@@ -286,7 +286,6 @@ t3 <- ggplot(gcme_meta,aes_string(x="narea", y="vcmax")) +geom_hline(yintercept=
   labs(y=~paste(V[cmax]))+labs(x=~paste(N[area]))
 
 t4 <- ggplot(gcme_meta,aes_string(x="LMA", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(LMA))
 
@@ -384,11 +383,6 @@ d3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="LMA")) +geom_hline(yi
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste("Root / shoot"))+labs(y=~paste(LMA))
 
-d4 <- ggplot(gcme_meta,aes_string(x="lai", y="LMA")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
-  theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
-  labs(x=~paste(LAI))+labs(y=~paste(LMA))
-
 d5 <- ggplot(gcme_meta,aes_string(x="bnpp", y="nmass")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
   geom_smooth(color="black",method="lm",se=T)+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
@@ -406,13 +400,13 @@ plot_grid(t1,t2,t3,t4,legend_info,
           t1a,p1,p2,p3,white,
           b1,b2,b3,b4,b5,
           c1,c2,c3,c4,c5,
-          d3,d4,d5,white,white,
+          d3,d5,white,white,white,
           nrow=5,
           labels = c('(a)','(b)','(c)','(d)',' ',
                      '(e)','(f)','(g)','(h)',' ',
                      '(i)','(j)','(k)','(l)','(m)',
                      '(n)','(o)','(p)','(q)','(r)',
-                     '(s)','(t)','(u)', ' ' , ' '), label_size = 23)+
+                     '(s)','(t)',' ', ' ' , ' '), label_size = 23)+
   theme(plot.background=element_rect(fill="white", color="white"))
 ggsave(paste("./output/chap2_meta.jpg",sep=""),width = 25, height = 25)
  
