@@ -315,7 +315,7 @@ b2 <- ggplot(gcme_meta,aes_string(x="bnpp", y="vcmax")) +geom_hline(yintercept=0
   labs(y=~paste(V[cmax]))+labs(x=~paste(BNPP))
 
 b3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+
+  geom_smooth(color="black",method="lm",se=T)+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(Root/Shoot))
 
@@ -338,7 +338,7 @@ c2 <- ggplot(gcme_meta,aes_string(x="bnpp", y="jmax")) +geom_hline(yintercept=0)
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(BNPP))
 
-c3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+c3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(Root/Shoot))
 
