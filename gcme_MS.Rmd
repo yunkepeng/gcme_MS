@@ -383,6 +383,11 @@ d3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="LMA")) +geom_hline(yi
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste("Root / shoot"))+labs(y=~paste(LMA))
 
+d4 <- ggplot(gcme_meta,aes_string(x="anpp", y="nmass")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+  geom_smooth(color="black",method="lm",se=T)+
+  theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
+  labs(x=~paste("ANPP"))+labs(y=~paste(N[mass]))
+
 d5 <- ggplot(gcme_meta,aes_string(x="bnpp", y="nmass")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
   geom_smooth(color="black",method="lm",se=T)+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
@@ -400,7 +405,7 @@ plot_grid(t1,t2,t3,t4,legend_info,
           t1a,p1,p2,p3,white,
           b1,b2,b3,b4,b5,
           c1,c2,c3,c4,c5,
-          d3,d5,white,white,white,
+          d3,d4,d5,white,white,
           nrow=5,
           labels = c('(a)','(b)','(c)','(d)',' ',
                      '(e)','(f)','(g)','(h)',' ',
