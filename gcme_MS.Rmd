@@ -411,7 +411,7 @@ plot_grid(t1,t2,t3,t4,legend_info,
                      '(e)','(f)','(g)','(h)',' ',
                      '(i)','(j)','(k)','(l)','(m)',
                      '(n)','(o)','(p)','(q)','(r)',
-                     '(s)','(t)',' ', ' ' , ' '), label_size = 23)+
+                     '(s)','(t)','(u)', ' ' , ' '), label_size = 23)+
   theme(plot.background=element_rect(fill="white", color="white"))
 ggsave(paste("./output/chap2_meta.jpg",sep=""),width = 25, height = 25)
  
