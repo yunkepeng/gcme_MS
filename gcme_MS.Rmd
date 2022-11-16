@@ -15,7 +15,7 @@ library(Hmisc)
 library(missMDA)
 library(FactoMineR)
 library(plotrix)
-
+library(ggpmisc)
 # reset validation metrics info
 white <- theme(plot.background=element_rect(fill="white", color="white"))
 ```
@@ -456,23 +456,23 @@ t.test(gcme_meta$lai, mu = 0)
 
 ```
 
-###qq plot
+###residuals figure   
 
 ```{r warning=FALSE}
-
-#create a function
+#distribution of residuals
 qqplot_output <- function(df,y_name,x_name,type_name,lab_title){
   data1 <- na.omit(df[,c(x_name,y_name,type_name)])
   lm_output <- (lm(data1[,c(y_name)]~data1[,c(x_name)]))
   data1$residual <- as.numeric(resid(lm_output))
   
-  output_fig <- ggplot(data1)+
-    stat_qq(aes(sample = residual,color=type_name),size=3)+
-    stat_qq_line(aes(sample = residual))+
+  output_fig <- ggplot(data1, aes(residual, color = type_name)) + geom_density(linewidth=3)+
     theme(axis.text=element_text(size=20),title=element_text(size=20),
           axis.title=element_text(size=20),legend.position="none")+
-    xlab("Theoritical")+ylab("Residuals")+lab_title
-
+    xlab("Residuals")+ylab("Density")+lab_title+ scale_color_manual(values=c("N-fertilization"="red",
+                                                                             "N-fixing"="green",
+                                                                             "others"="blue"))+
+      scale_x_continuous(limits = symmetric_limits)
+  
   return(output_fig)
 }
 
@@ -498,7 +498,6 @@ q19<- qqplot_output(gcme_meta,"LMA","root_shoot_ratio","type_name",ggtitle(~past
 q20<- qqplot_output(gcme_meta,"LMA","lai","type_name",ggtitle(~paste(LMA," vs. ",LAI,sep=" ")))
 q21<- qqplot_output(gcme_meta,"nmass","bnpp","type_name",ggtitle(~paste(N[mass]," vs. ",BNPP,sep=" ")))
 
-
 #get legend
 legend_fig<- ggplot(gcme_meta, aes( x= "jmax", y = "vcmax")) + 
   geom_point(aes(color=type_name),size=2)+
@@ -507,19 +506,19 @@ legend_fig<- ggplot(gcme_meta, aes( x= "jmax", y = "vcmax")) +
 legend_info <- as_ggplot(get_legend(legend_fig))
 
 white <- theme(plot.background=element_rect(fill="white", color="white"))
-
-plot_grid(q1,q2,q3,q4,legend_info,
-          q5,q6,q7,q8,white,
-          q9,q10,q11,q12,q13,
-          q14,q15,q16,q17,q18,
-          q19,q20,q21,white,white,
+#remove non-significant panel
+plot_grid(q1,q2,q3,legend_info,
+          q5,q6,q7,white,
+          q9,q10,q11,q12,
+          q14,q15,q16,white,
+          q19,q20,q21,white,
           nrow=5,
-          labels = c('(a)','(b)','(c)','(d)',' ',
-                     '(e)','(f)','(g)','(h)',' ',
-                     '(i)','(j)','(k)','(l)','(m)',
-                     '(n)','(o)','(p)','(q)','(r)',
-                     '(s)','(t)','(u)', ' ' , ' '), label_size = 23)+
+          labels = c('(a)','(b)','(c)',' ',
+                     '(d)','(e)','(f)',' ',
+                     '(g)','(h)','(i)','(j)',
+                     '(k)','(l)','(m)',' ',
+                     '(n)','(o)','(p)', ' '), label_size = 23)+
   theme(plot.background=element_rect(fill="white", color="white"))
-ggsave(paste("./output/chap2_meta_qqplot.jpg",sep=""),width = 25, height = 25)
+ggsave(paste("./output/chap2_meta_si.jpg",sep=""),width = 20, height = 25)
 
 ```
