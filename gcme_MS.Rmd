@@ -32,34 +32,41 @@ gcme_co2 <- subset(gcme,condition=="co2")
 #create a new column named Prediction to insert to boxplot
 gcme_co2$prediction <- "Prediction"
 
+summary(lm(vcmax~pred_vcmax,data=gcme_co2)) # R2 is so low
+
 vcmax_co2_fig <- gcme_co2 %>%
   ggplot( aes(x=ecosystem, y=vcmax)) +
   geom_boxplot(alpha = 0.6, outlier.shape = NA)+
   geom_boxplot(data=gcme_co2,aes(x=prediction,y=pred_vcmax), alpha = 0.6, width = 0.5,color="red",outlier.shape = NA)+
   geom_jitter(size=2,width = 0.3) +
+  geom_jitter(aes(x=prediction, y=pred_vcmax),size=2,color="red",width = 0.3) +
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1,1)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(V[cmax]," response to ",eCO[2])) 
+  labs(x="", y=~paste(V[cmax]," response")) 
 
 jmax_co2_fig <- gcme_co2 %>%
   ggplot( aes(x=ecosystem, y=jmax)) +
   geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_boxplot(data=gcme_co2,aes(x=prediction,y=pred_jmax), alpha = 0.6, width = 0.5,color="red",outlier.shape = NA) +
   geom_jitter(size=2,width = 0.3) +
+  geom_jitter(aes(x=prediction, y=pred_jmax),size=2,color="red",width = 0.3) +
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1,1)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(J[max]," response to ",eCO[2])) 
+  labs(x="", y=~paste(J[max]," response")) 
 
 jv_co2_fig <- gcme_co2 %>%
   ggplot( aes(x=ecosystem, y=jmax_vcmax)) +
   geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_boxplot(data=gcme_co2,aes(x=prediction,y=pred_jmax_vcmax), alpha = 0.6, width = 0.5,color="red",outlier.shape = NA) +
   geom_jitter(size=2,width = 0.3) +
+  geom_jitter(aes(x=prediction, y=pred_jmax_vcmax),size=2,color="red",width = 0.3) +
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1,1)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(J[max],"/",V[cmax]," response to ",eCO[2])) 
+  labs(x="", y=~paste(J[max],"/",V[cmax]," response")) 
 
-plot_grid(vcmax_co2_fig,jmax_co2_fig,jv_co2_fig,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
+plot_grid(vcmax_co2_fig,jmax_co2_fig,jv_co2_fig,
+          labels = c('(a)','(b)','(c)'),
+          nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
 ggsave(paste("./output/chap2_co2.jpg",sep=""),width = 15, height = 5)
 
@@ -102,7 +109,9 @@ jv_light_fig <- subset(gcme_light,is.na(jmax_vcmax)==F) %>% ggplot( aes(x=type_n
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
   labs(x="", y=~paste(J[max],"/",V[cmax]," response to light")) 
 
-plot_grid(vcmax_light_fig,jmax_light_fig,jv_light_fig,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
+plot_grid(vcmax_light_fig,jmax_light_fig,jv_light_fig,
+          labels = c('(a)','(b)','(c)'),
+          nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
 ggsave(paste("./output/chap2_light.jpg",sep=""),width = 15, height = 5)
 
@@ -153,7 +162,9 @@ w3 <- gcme_warming %>%
   labs(x=" ", y=~paste(J[max25],"/",V[cmax25],," response to warming")) +
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
-plot_grid(w1,w2,w3,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
+plot_grid(w1,w2,w3,
+          labels = c('(a)','(b)','(c)'),
+          nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
 ggsave(paste("./output/chap2_warming.jpg",sep=""),width = 15, height = 5)
 
@@ -206,7 +217,7 @@ f1 <- gcme_nfer %>%
   geom_jitter(data=subset(gcme_nfer,type_name=="Fertilization"|type_name=="No_fertilization"),aes(x=type_box, y=vcmax),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=vcmax),size=2,color="blue",width = 0.3)+
   geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ 
-  labs(x="", y=~paste(V[cmax]," response to eCO2")) +
+  labs(x="", y=~paste(V[cmax]," response")) +
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_v),alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_v),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_v),size=2,color="blue",width = 0.3)+
@@ -218,7 +229,7 @@ f2 <- gcme_nfer %>%
   geom_jitter(data=subset(gcme_nfer,type_name=="Fertilization"|type_name=="No_fertilization"),aes(x=type_box, y=jmax),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=jmax),size=2,color="blue",width = 0.3)+
   geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+
-  labs(x="", y=~paste(J[max]," response to eCO2")) +
+  labs(x="", y=~paste(J[max]," response")) +
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_j),alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_j),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_j),size=2,color="blue",width = 0.3)+
@@ -230,13 +241,15 @@ f3 <- gcme_nfer %>%
   geom_jitter(data=subset(gcme_nfer,type_name=="Fertilization"|type_name=="No_fertilization"),aes(x=type_box, y=jmax_vcmax),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(gcme_nfer,type_name=="highN"|type_name=="lowN"),aes(x=type_box, y=jmax_vcmax),size=2,color="blue",width = 0.3)+
   geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+
-  labs(x="", y=~paste(J[max],"/",V[cmax]," response to eCO2")) +
+  labs(x="", y=~paste(J[max],"/",V[cmax]," response")) +
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_jv),alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_jv),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_jv),size=2,color="blue",width = 0.3)+
   theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
 
-plot_grid(f1,f2,f3,nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
+plot_grid(f1,f2,f3,
+          labels = c('(a)','(b)','(c)'),
+          nrow=1,label_size = 15)+theme(plot.background=element_rect(fill="white", color="white"))
 
 ggsave(paste("./output/chap2_fertilization.jpg",sep=""),width = 15, height = 8)
 
