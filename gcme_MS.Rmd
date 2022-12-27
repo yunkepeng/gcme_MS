@@ -1,5 +1,5 @@
 ---
-title: "MS_CNuptake.Rmd"
+title: "MS_gcme.Rmd"
 output: html_document
 date: '2022-07-11'
 ---
@@ -16,6 +16,8 @@ library(missMDA)
 library(FactoMineR)
 library(plotrix)
 library(ggpmisc)
+library(vegan)
+library(ggrepel)
 # reset validation metrics info
 white <- theme(plot.background=element_rect(fill="white", color="white"))
 ```
@@ -370,7 +372,7 @@ gcme_meta_metrics <- gcme_meta[,c("vcmax","jmax","LMA","narea","nmass",
 res2 <- rcorr(as.matrix(gcme_meta_metrics))
 
 leaf_pvalue <- as.data.frame(res2$P[,c("narea","LMA","nmass")])
-leaf_pvalue[leaf_pvalue<0.05] <- "yes"
+leaf_pvalue[leaf_pvalue<0.11] <- "yes"
 leaf_pvalue
 
 #additionally plot Narea vs. Nmass,  narea vs. anpp, LMA vs. root/shoot, LMA vs LAI, Nmass vs. bnpp
@@ -437,11 +439,35 @@ ggsave(paste("./output/chap2_meta.jpg",sep=""),width = 25, height = 25)
 test <- gcme_meta[,c("lai","vcmax","jmax","narea","LMA","nmass","bnpp","anpp","root_shoot_ratio","soil_mineral_N")]
 ncomp <- estim_ncpPCA(test)
 res.imp <- imputePCA(test, ncp = ncomp$ncp) #filled by pca function
+final_data <- res.imp$completeObs
 
-res.pca <- PCA(res.imp$completeObs,axes=c(1,2))
+trait.pca <- prcomp(final_data, scale = TRUE)
+summary_pca <- summary(trait.pca)
+Importance_PCA <- summary_pca$importance
+Importance_PCA <- round(Importance_PCA, 4)
+coordinate_trait <- as.data.frame(trait.pca$rotation)
+
+coordinate_trait$varname <- c("LAI","V[cmax]","J[max]","N[area]","LMA","N[mass]","BNPP","ANPP","Root/Shoot","Soil mineral N")
+ggplot() +
+  geom_hline(aes(yintercept = 0), colour="darkgray",linetype="dashed") + 
+  geom_vline(aes(xintercept = 0), colour="darkgray",linetype="dashed")  +
+  xlim(-0.6,0.6)+ylim(-0.6,0.6)+
+  geom_segment(data=coordinate_trait, mapping=aes(x=0, y=0, xend=PC1, yend=PC2),
+               arrow=arrow(type = "closed", length = unit(0.01, "npc")),
+               size=0.5, color="black", linetype = 1) +
+  geom_text_repel(data = subset(coordinate_trait,varname!="Soil mineral N"), aes(label = varname,x = PC1, y = PC2), size = 4.5, color = "black",parse=TRUE) +
+  geom_text_repel(data = subset(coordinate_trait,varname=="Soil mineral N"), aes(label = varname,x = PC1, y = PC2), size = 4.5, color = "black",parse=FALSE) +
+  
+  theme_bw() + theme(panel.grid.major=element_line(colour=NA), panel.grid.minor = element_blank(), legend.position="none") + 
+  
+  theme(plot.title = element_text(size=14,face="bold"),
+        axis.text=element_text(size=12),
+        axis.title=element_text(size=12,face="bold"))+
+  xlab(paste('PC1 (', Importance_PCA[2,1]*100, '%)', sep ='')) +
+  ylab(paste('PC2 (', Importance_PCA[2,2]*100, '%)', sep ='')) 
+
 ggsave(paste("./output/pca1.jpg",sep=""),width = 5, height = 5)
-res.pca2 <- PCA(res.imp$completeObs,axes=c(3,4))
-ggsave(paste("./output/pca2.jpg",sep=""),width = 5, height = 5)
+
 
 #create a table for values and SE
 mean(gcme_meta$vcmax,na.rm=TRUE);std.error(gcme_meta$vcmax)
