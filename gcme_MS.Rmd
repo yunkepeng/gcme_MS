@@ -560,4 +560,20 @@ plot_grid(q1,q2,q3,legend_info,
   theme(plot.background=element_rect(fill="white", color="white"))
 ggsave(paste("./output/chap2_meta_si.jpg",sep=""),width = 20, height = 25)
 
+#calculate site-info (about number of sites cited in paper)
+final5 <- read.csv("~/data/gcme/MS_data/plot_data.csv")
+final5$type_name[is.na(final5$type_name)==T]<-"others" 
+dim(subset(final5,condition=="co2"))
+dim(subset(final5,condition=="co2" &(type_name)=="others")) # vcmax numbers 
+dim(subset(final5,condition=="co2" &(type_name)=="others"&is.na(jmax)==F)) # jmax numbers
+
+dim(subset(final5,is.na(nmass)==F))
+dim(subset(final5,is.na(narea)==F))
+dim(subset(final5,is.na(LMA)==F))
+dim(subset(final5,is.na(anpp)==F))
+dim(subset(final5,is.na(bnpp)==F))
+dim(subset(final5,is.na(lai)==F))
+dim(subset(final5,is.na(root_shoot_ratio)==F))
+dim(subset(final5,is.na(soil_mineral_N)==F))
+
 ```
