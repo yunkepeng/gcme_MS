@@ -20,6 +20,8 @@ library(vegan)
 library(ggrepel)
 # reset validation metrics info
 white <- theme(plot.background=element_rect(fill="white", color="white"))
+text_larger <- theme(axis.title = element_text(size = 16),
+        axis.text = element_text(size = 16))
 ```
 
 ### Read data and processing co2 effect
@@ -41,30 +43,30 @@ vcmax_co2_fig <- gcme_co2 %>%
   geom_boxplot(alpha = 0.6, outlier.shape = NA)+
   geom_boxplot(data=gcme_co2,aes(x=prediction,y=pred_vcmax), alpha = 0.6, width = 0.5,color="red",outlier.shape = NA)+
   geom_jitter(size=2,width = 0.3) +
-  geom_jitter(aes(x=prediction, y=pred_vcmax),size=2,color="red",width = 0.3) +
+  geom_jitter(aes(x=prediction, y=pred_vcmax),size=2,color="red",width = 0.3,alpha=0.4) +
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1,1)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(V[cmax]," response")) 
+  theme_classic()+coord_flip()+
+  labs(x="", y=~paste(V[cmax]," response"))+text_larger
 
 jmax_co2_fig <- gcme_co2 %>%
   ggplot( aes(x=ecosystem, y=jmax)) +
   geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_boxplot(data=gcme_co2,aes(x=prediction,y=pred_jmax), alpha = 0.6, width = 0.5,color="red",outlier.shape = NA) +
   geom_jitter(size=2,width = 0.3) +
-  geom_jitter(aes(x=prediction, y=pred_jmax),size=2,color="red",width = 0.3) +
+  geom_jitter(aes(x=prediction, y=pred_jmax),size=2,color="red",width = 0.3,alpha=0.4) +
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1,1)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(J[max]," response")) 
+  theme_classic()+coord_flip()+
+  labs(x="", y=~paste(J[max]," response")) +text_larger
 
 jv_co2_fig <- gcme_co2 %>%
   ggplot( aes(x=ecosystem, y=jmax_vcmax)) +
   geom_boxplot(alpha = 0.6,outlier.shape = NA)+
   geom_boxplot(data=gcme_co2,aes(x=prediction,y=pred_jmax_vcmax), alpha = 0.6, width = 0.5,color="red",outlier.shape = NA) +
   geom_jitter(size=2,width = 0.3) +
-  geom_jitter(aes(x=prediction, y=pred_jmax_vcmax),size=2,color="red",width = 0.3) +
+  geom_jitter(aes(x=prediction, y=pred_jmax_vcmax),size=2,color="red",width = 0.3,alpha=0.4) +
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-1,1)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(J[max],"/",V[cmax]," response")) 
+  theme_classic()+coord_flip()+
+  labs(x="", y=~paste(J[max],"/",V[cmax]," response")) +text_larger
 
 plot_grid(vcmax_co2_fig,jmax_co2_fig,jv_co2_fig,
           labels = c('(a)','(b)','(c)'),
@@ -92,24 +94,24 @@ vcmax_light_fig <- gcme_light %>% ggplot( aes(x=type_name, y=vcmax)) +
   geom_boxplot(alpha = 0,outlier.shape = NA)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_vcmax),color="red", size=0.5)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(V[cmax]," response to light")) 
+  theme_classic()+coord_flip()+
+  labs(x="", y=~paste(V[cmax]," response to light")) +text_larger
 
 jmax_light_fig <- subset(gcme_light,is.na(jmax)==F) %>% ggplot( aes(x=type_name, y=jmax)) +
   geom_jitter(size=2,width = 0.3) +
   geom_boxplot(alpha = 0,outlier.shape = NA)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_jmax),color="red", size=0.5)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(J[max]," response to light")) 
+  theme_classic()+coord_flip()+
+  labs(x="", y=~paste(J[max]," response to light")) +text_larger
 
 jv_light_fig <- subset(gcme_light,is.na(jmax_vcmax)==F) %>% ggplot( aes(x=type_name, y=jmax_vcmax)) +
   geom_jitter(size=2,width = 0.3) +
   geom_boxplot(alpha = 0,outlier.shape = NA)+
   geom_hline( linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.5,1)+
   geom_hline(yintercept=mean(gcme_light$pred_jmax_vcmax),color="red", size=0.5)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))+
-  labs(x="", y=~paste(J[max],"/",V[cmax]," response to light")) 
+  theme_classic()+coord_flip()+
+  labs(x="", y=~paste(J[max],"/",V[cmax]," response to light")) +text_larger
 
 plot_grid(vcmax_light_fig,jmax_light_fig,jv_light_fig,
           labels = c('(a)','(b)','(c)'),
@@ -142,7 +144,7 @@ w1 <- gcme_warming %>%
   geom_boxplot(aes(x=prediction, y=pred_vcmax),color="red",alpha = 0.6,outlier.shape = NA)+
   geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.15,0.05)+
   labs(x=" ", y=~paste(V[cmax25]," response to warming")) +
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
+  theme_classic()+coord_flip()+text_larger
 
 w2 <- gcme_warming %>%
   ggplot( aes(x=observation, y=jmax)) +
@@ -152,7 +154,7 @@ w2 <- gcme_warming %>%
   geom_boxplot(aes(x=prediction, y=pred_jmax),color="red",alpha = 0.6,outlier.shape = NA)+
   geom_hline(  linetype = 'dotted',yintercept=0.0, size=0.5)+ ylim(-0.15,0.05)+
   labs(x=" ", y=~paste(J[max25]," response to warming")) +
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
+  theme_classic()+coord_flip()+text_larger
 
 w3 <- gcme_warming %>%
   ggplot( aes(x=observation, y=jmax_vcmax)) +
@@ -162,7 +164,7 @@ w3 <- gcme_warming %>%
   geom_boxplot(aes(x=prediction, y=pred_jmax_vcmax),color="red",alpha = 0.6,outlier.shape = NA)+
   geom_hline( linetype = 'dotted', yintercept=0.0, size=0.5)+ ylim(-0.15,0.05)+
   labs(x=" ", y=~paste(J[max25],"/",V[cmax25],," response to warming")) +
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
+  theme_classic()+coord_flip()+text_larger
 
 plot_grid(w1,w2,w3,
           labels = c('(a)','(b)','(c)'),
@@ -223,7 +225,7 @@ f1 <- gcme_nfer %>%
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_v),alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_v),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_v),size=2,color="blue",width = 0.3)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
+  theme_classic()+coord_flip()+text_larger
 
 f2 <- gcme_nfer %>%
   ggplot( aes(x=type_box, y=jmax)) +
@@ -235,7 +237,7 @@ f2 <- gcme_nfer %>%
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_j),alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_j),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_j),size=2,color="blue",width = 0.3)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
+  theme_classic()+coord_flip()+text_larger
 
 f3 <- gcme_nfer %>%
   ggplot( aes(x=type_box, y=jmax_vcmax)) +
@@ -247,7 +249,7 @@ f3 <- gcme_nfer %>%
   geom_boxplot(data=df3,aes(x=type_box,y=ratio_jv),alpha=0.5,width = 0.7, outlier.shape = NA)+
   geom_jitter(data=subset(df3,condition=="Fertilization"),aes(x=type_box, y=ratio_jv),size=2,color="black",width = 0.3)+
   geom_jitter(data=subset(df3,condition=="highN"),aes(x=type_box, y=ratio_jv),size=2,color="blue",width = 0.3)+
-  theme_classic()+coord_flip()+theme(axis.text=element_text(size=12))
+  theme_classic()+coord_flip()+text_larger
 
 plot_grid(f1,f2,f3,
           labels = c('(a)','(b)','(c)'),
@@ -575,5 +577,12 @@ dim(subset(final5,is.na(bnpp)==F))
 dim(subset(final5,is.na(lai)==F))
 dim(subset(final5,is.na(root_shoot_ratio)==F))
 dim(subset(final5,is.na(soil_mineral_N)==F))
+
+#check N-fixing values
+summary(subset(final5,ecm_type=="Nfix")$jmax)
+nrow(subset(final5,ecm_type=="Nfix" & is.na(jmax)==F))
+
+summary(subset(final5,is.na(ecm_type)==T)$jmax)
+length(na.omit(subset(final5,is.na(ecm_type)==T)$jmax))
 
 ```
