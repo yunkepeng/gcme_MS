@@ -31,17 +31,19 @@ text_larger <- theme(axis.title = element_text(size = 16),
 gcme <- read.csv("~/data/gcme/MS_data/plot_data.csv")
 #check site-info (about number of sites cited in paper)
 dim(subset(gcme,condition=="co2"))
-dim(subset(gcme,condition=="co2" &is.na(type_name)==T)) # vcmax numbers
-dim(subset(gcme,condition=="co2" &is.na(type_name)==T&is.na(jmax)==F)) # jmax numbers
+dim(subset(gcme,condition=="co2" &is.na(type_name)==T&is.na(vcmax)==F)) # vcmax numbers for solely-eco2 measurements
+dim(subset(gcme,condition=="co2" &is.na(type_name)==T&is.na(jmax)==F)) # jmax numbers for solely-eco2 measurements
 
-dim(subset(gcme,is.na(nmass)==F))
-dim(subset(gcme,is.na(narea)==F))
-dim(subset(gcme,is.na(LMA)==F))
-dim(subset(gcme,is.na(anpp)==F))
-dim(subset(gcme,is.na(bnpp)==F))
-dim(subset(gcme,is.na(lai)==F))
-dim(subset(gcme,is.na(root_shoot_ratio)==F))
-dim(subset(gcme,is.na(soil_mineral_N)==F))
+#calculate other traits - only keep eCO2 and N fertilisation plots 
+#and remove repeated plots
+dim(subset(gcme,is.na(nmass)==F & (condition=="co2"|condition=="lowN")))
+dim(subset(gcme,is.na(narea)==F& (condition=="co2"|condition=="lowN")))
+dim(subset(gcme,is.na(LMA)==F& (condition=="co2"|condition=="lowN")))
+dim(subset(gcme,is.na(anpp)==F& (condition=="co2"|condition=="lowN")))
+dim(subset(gcme,is.na(bnpp)==F&(condition=="co2"|condition=="lowN")))
+dim(subset(gcme,is.na(lai)==F& (condition=="co2"|condition=="lowN")))
+dim(subset(gcme,is.na(root_shoot_ratio)==F&(condition=="co2"|condition=="lowN")))
+dim(subset(gcme,is.na(soil_mineral_N)==F& (condition=="co2"|condition=="lowN")))
 
 subset(gcme,ecm_type=="Nfix")$jmax
 summary(subset(gcme,ecm_type=="Nfix")$jmax)
