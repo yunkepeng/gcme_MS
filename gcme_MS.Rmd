@@ -303,87 +303,87 @@ gcme_meta %>% group_by(type_name)  %>% summarise(number = n())
 
 t1 <- ggplot(gcme_meta,aes_string(x="jmax", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+
   stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(J[max]))
 
 t1a <- ggplot(gcme_meta,aes_string(x="vcmax", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(V[cmax]))
 
 t2 <- ggplot(gcme_meta,aes_string(x="nmass", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(N[mass]))
 
 t3 <- ggplot(gcme_meta,aes_string(x="narea", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(N[area]))
 
-t4 <- ggplot(gcme_meta,aes_string(x="LMA", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+t4 <- ggplot(gcme_meta,aes_string(x="LMA", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(LMA))
 
 p1 <- ggplot(gcme_meta,aes_string(x="nmass", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(N[mass]))
 
 p2 <- ggplot(gcme_meta,aes_string(x="narea", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(N[area]))
 
-p3 <- ggplot(gcme_meta,aes_string(x="LMA", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+p3 <- ggplot(gcme_meta,aes_string(x="LMA", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(LMA))
 
 #now - for bi-variate relationship
 b1 <- ggplot(gcme_meta,aes_string(x="anpp", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+
+  geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(ANPP))
 
 b2 <- ggplot(gcme_meta,aes_string(x="bnpp", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(BNPP))
 
 b3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste(Root/Shoot))
 
 b4 <- ggplot(gcme_meta,aes_string(x="lai", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste("LAI"))
 
-b5 <- ggplot(gcme_meta,aes_string(x="soil_mineral_N", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+b5 <- ggplot(gcme_meta,aes_string(x="soil_mineral_N", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(V[cmax]))+labs(x=~paste("Soil inorganic N"))
 
 c1 <- ggplot(gcme_meta,aes_string(x="anpp", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(ANPP))
 
 c2 <- ggplot(gcme_meta,aes_string(x="bnpp", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(BNPP))
 
-c3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+
+c3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+geom_smooth(color="black",method="lm",se=F,linetype = "dashed")+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste(Root/Shoot))
 
-c4 <- ggplot(gcme_meta,aes_string(x="lai", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+c4 <- ggplot(gcme_meta,aes_string(x="lai", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste("LAI"))
 
-c5 <- ggplot(gcme_meta,aes_string(x="soil_mineral_N", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
+c5 <- ggplot(gcme_meta,aes_string(x="soil_mineral_N", y="jmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(y=~paste(J[max]))+labs(x=~paste("Soil inorganic N"))
 
@@ -402,36 +402,36 @@ leaf_pvalue
 d1 <- ggplot(gcme_meta,aes_string(x="nmass", y="narea")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+
   geom_point(aes(color=type_name),size=3)+
   stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste(N[mass]))+labs(y=~paste(N[area]))
 
 d2 <- ggplot(gcme_meta,aes_string(x="LMA", y="narea")) +geom_hline(yintercept=0)+
   geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+
   stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+xlim(-0.1,0.7)+
+  geom_smooth(color="black",method="lm",se=T)+xlim(-0.1,0.7)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste("LMA"))+labs(y=~paste(N[area]))
 
 d3 <- ggplot(gcme_meta,aes_string(x="root_shoot_ratio", y="LMA")) +geom_hline(yintercept=0)+
   geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+
   stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste("Root / shoot"))+labs(y=~paste(LMA))
 
 d4 <- ggplot(gcme_meta,aes_string(x="anpp", y="nmass")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste("ANPP"))+labs(y=~paste(N[mass]))
 
 d5 <- ggplot(gcme_meta,aes_string(x="bnpp", y="nmass")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+
-  geom_smooth(color="black",method="lm",se=T)+
+  geom_smooth(color="black",method="lm",se=T)+theme_classic()+
   theme(axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"),legend.position="none")+
   labs(x=~paste("BNPP"))+labs(y=~paste(N[mass]))
 
 
-final1_legend <- ggplot(gcme_meta,aes_string(x="soil_mineral_N", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+geom_smooth(color="black",method="lm",se=F)+theme(text = element_text(size=30),axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"))+
+final1_legend <- ggplot(gcme_meta,aes_string(x="soil_mineral_N", y="vcmax")) +geom_hline(yintercept=0)+geom_vline(xintercept=0)+geom_point(aes(color=type_name),size=3)+stat_cor(label.y.npc="top", label.x.npc = "left",aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),size=7)+geom_smooth(color="black",method="lm",se=F)+theme_classic()+theme(text = element_text(size=30),axis.text=element_text(size=25),axis.title=element_text(size=25,face="bold"))+
   labs(y=~paste(V[cmax]))+labs(x=~paste("Soil inorganic N"))+scale_colour_discrete(" ")
 
 legend_info <- as_ggplot(get_legend(final1_legend))
